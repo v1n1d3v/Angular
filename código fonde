@@ -1,0 +1,92 @@
+
+<mat-toolbar color="primary">
+  Lista de Produtos
+  <span class="spacer"></span>
+  <a mat-button routerLink="/cadastro">Cadastrar Produto</a>
+</mat-toolbar>
+<div class="container">
+  <mat-card *ngFor="let produto of produtos" class="produto-card">
+    <mat-card-title>{{ produto.nome }}</mat-card-title>
+    <mat-card-content>
+      <p>Preço: R$ {{ produto.preco }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button color="accent" (click)="editar(produto)">Editar</button>
+      <button mat-stroked-button color="warn" (click)="remover(produto.id!)">Remover</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+<mat-toolbar color="accent">
+  Cadastrar Produto
+  <span class="spacer"></span>
+  <a mat-button routerLink="/produtos">Voltar à Lista</a>
+</mat-toolbar>
+<div class="container">
+  <form (ngSubmit)="salvar()">
+    <mat-form-field class="full-width">
+      <mat-label>Nome</mat-label>
+      <input matInput [(ngModel)]="produto.nome" name="nome" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Preço</mat-label>
+      <input matInput type="number" [(ngModel)]="produto.preco" name="preco" required />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Salvar</button>
+  </form>
+</div>
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProdutosComponent } from './pages/produtos/produtos.component';
+import { CadastroProdutoComponent } from './pages/cadastro-produto/cadastro-produto.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: 'produtos', pathMatch: 'full' },
+  { path: 'produtos', component: ProdutosComponent },
+  { path: 'cadastro', component: CadastroProdutoComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
+
+
+import { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  // ...
+  imports: [
+   
+    AppRoutingModule
+  ]
+})
+
+<router-outlet></router-outlet>
+
+.container {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.produto-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
